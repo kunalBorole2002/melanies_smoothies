@@ -11,7 +11,20 @@ name_on_order = st.text_input('Name on Smoothie:')
 st.write('The name on your Smoothie will be: ',name_on_order)
 cnx = st.connection("snowflake")
 session = cnx.session()
-my_dataframe = session.table("smoothies.public.fruit_options").select(col("FRUIT_NAME"))
+my_dataframe = session.table("smoothies.public.fruit_options").select(col("FRUIT_NAME"), col("search_on"))
+
+# Convert to pandas DataFrame
+pd_df = my_dataframe.to_pandas()
+
+# Ensure the 'search_on' column exists
+print(pd_df.columns)  # This will show both 'FRUIT_NAME' and 'search_on'
+
+# Assuming 'each_fruit' is defined and you want to find the corresponding 'search_on' value
+search_on = pd_df.loc[pd_df['FRUIT_NAME'] == each_fruit, 'search_on'].iloc[0]
+
+# Display the result
+st.write('The search value 
+
 #st.dataframe(data=my_dataframe, use_container_width = True)
 #st.stop()
 pd_df = my_dataframe.to_pandas()
